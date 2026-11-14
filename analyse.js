@@ -1,4 +1,4 @@
-/* Function Analyser — booleanfunction.org
+/* Function Analyser — booleanfunction.github.io
  * Paste a truth table; get its cryptographic properties and (for n <= 6) its class.
  * Everything is computed in the browser from the definitions. No dependencies.
  *

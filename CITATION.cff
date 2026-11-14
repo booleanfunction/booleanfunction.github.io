@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "If you use the n = 6 affine equivalence class data or tables from this site, please cite the PhD thesis below."
-title: "Boolean Functions for Cryptography: affine equivalence class data (booleanfunction.org)"
+title: "Boolean Functions for Cryptography: affine equivalence class data (booleanfunction.github.io)"
 type: dataset
 authors:
   - family-names: Fuller
     given-names: Joanne
     orcid: "https://orcid.org/0000-0002-5221-3505"
-url: "https://booleanfunction.org"
+url: "https://booleanfunction.github.io"
 license: CC-BY-4.0
 keywords:
   - Boolean functions

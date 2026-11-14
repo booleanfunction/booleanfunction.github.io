@@ -1,4 +1,4 @@
-/* Linear redundancy check — booleanfunction.org
+/* Linear redundancy check — booleanfunction.github.io
  * Builds the AES S-box from its definition (inversion in GF(2^8) + affine map), computes
  * all 255 component functions b_alpha, and verifies the thesis mapping b1(x) = b0(D01 x).
  * Compares with a random bijective S-box. No dependencies.

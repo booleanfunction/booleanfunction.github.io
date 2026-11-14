@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the static booleanfunction.org site.
+"""Build the static booleanfunction.github.io site.
 
 Stdlib only — no third-party packages, no install required. Run:
 
@@ -91,7 +91,7 @@ def nav(active):
             "</script>\n")
 
 
-SITE = "https://booleanfunction.org/"
+SITE = "https://booleanfunction.github.io/"
 ORCID = "https://orcid.org/0000-0002-5221-3505"
 
 # schema.org Dataset description (Google Dataset Search). Add the Zenodo DOI as
@@ -876,7 +876,7 @@ against their file names.</li>
 <div class="callout-note"><p>J. Fuller. <em>Analysis of Affine Equivalent Boolean Functions for
 Cryptography.</em> PhD thesis, Queensland University of Technology, Brisbane, Australia, 2003.
 <a href="https://eprints.qut.edu.au/15828/1/Joanne_Fuller_Thesis.pdf">https://eprints.qut.edu.au/15828/</a>.
-Data available at https://booleanfunction.org/equivalence-classes.html</p></div>
+Data available at https://booleanfunction.github.io/equivalence-classes.html</p></div>
 <pre><code>@phdthesis{{fuller2003affine,
   author = {{Joanne Fuller}},
   title  = {{Analysis of Affine Equivalent Boolean Functions for Cryptography}},
@@ -884,7 +884,7 @@ Data available at https://booleanfunction.org/equivalence-classes.html</p></div>
   address = {{Brisbane, Australia}},
   year   = {{2003}},
   url    = {{https://eprints.qut.edu.au/15828/}},
-  note   = {{Data: \\url{{https://booleanfunction.org/equivalence-classes.html}}}}
+  note   = {{Data: \\url{{https://booleanfunction.github.io/equivalence-classes.html}}}}
 }}</code></pre>"""
     page("equivalence-classes.html", "Affine Equivalence Classes — Boolean Functions for Cryptography",
          "Affine equivalence class tables for Boolean functions of n = 3, 4, 5 and the full n = 6 classification data (150,357 classes).",

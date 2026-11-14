@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://booleanfunction.org/sitemap.xml
+Sitemap: https://booleanfunction.github.io/sitemap.xml

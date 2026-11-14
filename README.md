@@ -1,7 +1,7 @@
-# booleanfunction.org
+# booleanfunction.github.io
 
 The public website for **Boolean Functions for Cryptography** research — a modern home for
-the original *Boolean Planet* site, served at [booleanfunction.org](https://booleanfunction.org).
+the original *Boolean Planet* site, served at [booleanfunction.github.io](https://booleanfunction.github.io/).
 
 Plain static HTML — **no build framework or toolchain required**. GitHub Pages serves the
 `.html` files directly. Maths and webfonts are loaded client-side from CDNs by the visitor's
@@ -40,10 +40,10 @@ once in `build.py`, so a change there propagates to every page. Styling is in `s
 
 ## Publishing
 
-Published as a GitHub Pages site. Once the repository is on GitHub, enable Pages on the
-default branch (root) in the repository settings — no Actions workflow or build is needed,
-since the committed `.html` is the site. To attach the custom domain, set
-`booleanfunction.org` in the Pages settings and add a `CNAME` file containing that domain.
+Published as the GitHub Pages user site of the `booleanfunction` account (this repository is
+`booleanfunction.github.io`), served from the default branch root. No Actions workflow or build is
+needed, since the committed `.html` is the site. A custom domain can be added later via a `CNAME`
+file and the Pages settings.
 
 ## Structure
 

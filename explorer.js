@@ -1,4 +1,4 @@
-/* Class Graph Explorer — booleanfunction.org
+/* Class Graph Explorer — booleanfunction.github.io
  * Interactive affine-equivalence class connection graphs for n = 3, 4, 5.
  * Data (computed exactly by build.py) is embedded in #graph-data. No dependencies.
  */
