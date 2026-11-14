@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use the n = 6 affine equivalence class data or tables from this site, please cite the PhD thesis below."
+title: "Boolean Functions for Cryptography: affine equivalence class data (booleanfunction.org)"
+type: dataset
+authors:
+  - family-names: Fuller
+    given-names: Joanne
+    orcid: "https://orcid.org/0000-0002-5221-3505"
+url: "https://booleanfunction.org"
+license: CC-BY-4.0
+keywords:
+  - Boolean functions
+  - cryptography
+  - affine equivalence
+  - nonlinearity
+  - equivalence classes
+preferred-citation:
+  type: thesis
+  thesis-type: PhD
+  title: "Analysis of Affine Equivalent Boolean Functions for Cryptography"
+  authors:
+    - family-names: Fuller
+      given-names: Joanne
+      orcid: "https://orcid.org/0000-0002-5221-3505"
+  institution:
+    name: "Queensland University of Technology"
+    city: Brisbane
+    country: AU
+  year: 2003
+  month: 12
+  url: "https://eprints.qut.edu.au/15828/"

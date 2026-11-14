@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S-boxes and Linear Redundancy — Boolean Functions for Cryptography</title>
+<meta name="description" content="Linear redundancy in S-boxes: all 255 component functions of the AES S-box are affine equivalent (with an in-browser check), how to remove it, and a survey of cipher S-boxes.">
+<meta name="author" content="Joanne Fuller">
+<link rel="canonical" href="https://booleanfunction.org/sboxes.html">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="style.css?v=c9669768">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+<script src="aes.js?v=59517994" defer></script>
+</head>
+<body>
+<header class="site-head"><a class="masthead-title" href="index.html">Boolean Functions for Cryptography</a><nav class="masthead-nav" aria-label="Main"><a class="navlink" href="index.html">Home</a><a class="navlink" href="basics.html">Basics</a><details class="navgroup"><summary class="navlink">Classes</summary><div class="navmenu"><a href="equivalence-classes.html">Equivalence classes &amp; data</a><a href="class-sizes.html">Class sizes</a><a href="connectivity.html">Connectivity</a></div></details><details class="navgroup"><summary class="navlink active">Research</summary><div class="navmenu"><a href="constructions.html">Constructions &amp; search</a><a href="sboxes.html" aria-current="page">S-boxes &amp; AES</a><a href="records.html">Records &amp; open problems</a><a href="efficient-implementation.html">Efficient implementation</a></div></details><details class="navgroup"><summary class="navlink">Tools</summary><div class="navmenu"><a href="explore.html">Class Graph Explorer</a><a href="analyse.html">Function Analyser</a></div></details><a class="navlink" href="publications.html">Publications</a><a class="navlink" href="learning.html">Learning</a></nav></header>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details.navgroup[open]').forEach(function(d){d.removeAttribute('open');});});document.addEventListener('toggle',function(e){var t=e.target;if(t.matches&&t.matches('details.navgroup')&&t.open)document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(d!==t)d.removeAttribute('open');});},true);</script>
+<main class="container">
+<h1>S-boxes and Linear Redundancy</h1>
+<p>An S-box (substitution box) maps $n$ input bits to $m$ output bits and is the main source of
+nonlinearity in most block ciphers. A bijective $n \times n$ S-box can be viewed as $n$ Boolean
+functions $b_0, \ldots, b_{n-1}$, one per output bit, together with all $2^n - 1$ of their XOR
+combinations $b_\alpha$. These <em>component functions</em> determine the S-box's resistance to
+linear and differential cryptanalysis.</p>
+
+<h2>Linear redundancy</h2>
+<p>The PhD research proposed a new S-box criterion: an S-box has <strong>linear redundancy</strong> if
+two of its component functions are <a href="equivalence-classes.html">affine equivalent</a>,
+that is, one output is just another output with its inputs linearly transformed. For random
+S-boxes this essentially never happens: in 10,000 random bijective S-boxes of size $7 \times 7$
+and $8 \times 8$, <em>none</em> had any linear redundancy. Its presence is therefore a clear sign of
+non-random structure.</p>
+
+<h2>The AES S-box</h2>
+<p>The AES S-box (inversion in $\mathrm{GF}(2^8)$ followed by an affine map) has excellent
+nonlinearity, degree and autocorrelation. Using the equivalence test built on the
+<a href="connectivity.html">Theorem of Connectivity</a>, Fuller and Millan (2002) showed that
+<strong>all 255 component functions of the AES S-box are affine equivalent</strong>: the AES S-box
+has <em>complete</em> linear redundancy. The search for each mapping was cut to about $2^{15}$
+candidates, and exactly eight distinct linear transforms relate any pair. For example, output bit
+1 is output bit 0 with its inputs transformed by a fixed matrix,
+$b_1(x) = b_0(D_{01}\,x)$, with</p>
+<p>$$D_{01} = \begin{pmatrix}
+1&0&1&1&0&0&1&0\\ 0&1&0&1&0&1&1&0\\ 0&0&0&1&0&0&1&0\\ 1&0&0&1&1&0&0&0\\
+0&1&0&1&1&1&0&0\\ 1&0&0&0&1&1&1&0\\ 1&1&0&1&0&0&0&0\\ 1&0&0&0&1&1&0&1
+\end{pmatrix}$$</p>
+<p>(with $x = (x_1, \ldots, x_8)^T$ and $x_8$ the least significant bit). As the thesis records,
+following this result Biham, Wagner, and Youssef and Tavares (2002) showed that
+<em>every</em> S-box based on finite field inversion or power maps has complete linear redundancy,
+and the surrounding affine maps do not remove it.</p>
+
+<div class="aes-demo">
+<p><strong>Check it yourself.</strong> This builds the AES S-box in your browser from its definition,
+analyses all 255 component functions, and tests the mapping above on every input.</p>
+<p><button type="button" id="aes-run" class="gx-primary">Run the check on AES</button>
+<button type="button" id="aes-random">Compare a random S-box</button></p>
+<div id="aes-out" aria-live="polite"></div>
+<div id="aes-rand-out" aria-live="polite"></div>
+</div>
+
+<h2>Removing it</h2>
+<p>Can the redundancy be removed without giving up too much strength? The thesis gave
+<em>tweaking</em> algorithms that repeatedly swap S-box outputs: a two-step version, and a four-step
+version that keeps the self-inverse property of inversion S-boxes and creates no fixed points.
+Applied to finite field S-boxes, they produced bijective $8 \times 8$ S-boxes <strong>without
+linear redundancy</strong> with nonlinearity 108, degree 7 and maximum autocorrelation 56. The
+best such S-box previously in use, from the original Hierocrypt specification, had 106, 6 and 72.</p>
+<p>The security impact of linear redundancy is still not fully understood. The thesis suggested
+avenues for cryptanalysis (reduced-round distinguishers, the algebraic representation of
+Rijndael, the key schedule's use of the S-box) and recommended S-boxes without linear redundancy
+until the implications are known.</p>
+
+<h2>Survey of cipher S-boxes</h2>
+<p>An $m \times k$ S-box has $k$ output coordinates, each a Boolean function of $m$ inputs.
+The table below summarises, for a range of well-known cipher S-boxes, how many distinct
+<a href="equivalence-classes.html">affine equivalence classes</a> those coordinate functions
+fall into and the range of their nonlinearity. It does this both for the individual coordinate
+functions and for all non-zero XOR combinations of them (for an 8 × 8 S-box, the 255 non-zero
+linear combinations of the outputs).</p>
+<p>When every function falls into a <strong>single class</strong>, the S-box has
+<strong>linear redundancy</strong>: each output can be obtained from any other by an affine
+transformation. The AES S-box, built by inversion in a finite field, is the standout example.
+See the papers on linear redundancy on the <a href="publications.html">Publications</a> page.</p>
+
+<div class="table-scroll"><table><thead><tr><th rowspan="2">cipher</th><th rowspan="2">design technique</th><th rowspan="2">size</th><th colspan="3">individual functions</th><th colspan="3">XOR combinations</th></tr><tr><th class="num">classes</th><th class="num">nl min</th><th class="num">nl max</th><th class="num">classes</th><th class="num">nl min</th><th class="num">nl max</th></tr></thead><tbody><tr><td>AES (Rijndael), Grand-Cru, Mugi, Q, Scream</td><td>Finite field inversion</td><td>8 × 8</td><td class="num">1</td><td class="num">112</td><td class="num">112</td><td class="num">1</td><td class="num">112</td><td class="num">112</td></tr><tr><td>Anubis</td><td>Pseudo-random</td><td>8 × 8</td><td class="num">8</td><td class="num">96</td><td class="num">108</td><td class="num">255</td><td class="num">94</td><td class="num">110</td></tr><tr><td>Noekeon</td><td>Bit-sliced algebraic; contains fixed points</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Q (s-box 1)</td><td>Bit-sliced algebraic; contains fixed points</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Q (s-box 2)</td><td>Bit-sliced algebraic; contains fixed points</td><td>4 × 4</td><td class="num">1</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Q (s-box 3)</td><td>Bit-sliced algebraic; contains fixed points</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Camellia (s-box 1)</td><td>Finite field inversion</td><td>8 × 8</td><td class="num">1</td><td class="num">112</td><td class="num">112</td><td class="num">1</td><td class="num">112</td><td class="num">112</td></tr><tr><td>Camellia (s-box 4)</td><td>Finite field inversion</td><td>8 × 8</td><td class="num">1</td><td class="num">112</td><td class="num">112</td><td class="num">1</td><td class="num">112</td><td class="num">112</td></tr><tr><td>SC2000</td><td>Unknown</td><td>5 × 5</td><td class="num">1</td><td class="num">12</td><td class="num">12</td><td class="num">1</td><td class="num">12</td><td class="num">12</td></tr><tr><td>SC2000</td><td>Unknown</td><td>6 × 6</td><td class="num">1</td><td class="num">24</td><td class="num">24</td><td class="num">1</td><td class="num">24</td><td class="num">24</td></tr><tr><td>Hierocrypt</td><td>Unknown</td><td>8 × 8</td><td class="num">8</td><td class="num">106</td><td class="num">110</td><td class="num">255</td><td class="num">106</td><td class="num">112</td></tr><tr><td>Serpent (s-box 1)</td><td>Heuristic</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Serpent (s-box 2)</td><td>Heuristic</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Serpent (s-box 3)</td><td>Heuristic</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Serpent (s-box 4)</td><td>Heuristic</td><td>4 × 4</td><td class="num">1</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Serpent (s-box 5)</td><td>Heuristic</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Serpent (s-box 6)</td><td>Heuristic</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Serpent (s-box 7)</td><td>Heuristic</td><td>4 × 4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Serpent (s-box 8)</td><td>Heuristic</td><td>4 × 4</td><td class="num">1</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td></tr><tr><td>Khazad</td><td>Pseudo-random</td><td>8 × 8</td><td class="num">8</td><td class="num">98</td><td class="num">108</td><td class="num">255</td><td class="num">96</td><td class="num">110</td></tr><tr><td>Square</td><td>Finite field inversion</td><td>8 × 8</td><td class="num">1</td><td class="num">112</td><td class="num">112</td><td class="num">1</td><td class="num">112</td><td class="num">112</td></tr><tr><td>Misty1</td><td>Heuristic; contains fixed points</td><td>7 × 7</td><td class="num">1</td><td class="num">56</td><td class="num">56</td><td class="num">1</td><td class="num">56</td><td class="num">56</td></tr><tr><td>Misty1</td><td>Heuristic; contains fixed points</td><td>9 × 9</td><td class="num">1</td><td class="num">240</td><td class="num">240</td><td class="num">1</td><td class="num">240</td><td class="num">240</td></tr><tr><td>Sober-t32</td><td>Hybrid of Skipjack S-box and ISRC-designed S-box</td><td>8 × 32</td><td class="num">32</td><td class="num">104</td><td class="num">112</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">n/a</td></tr><tr><td>Skipjack</td><td>Unknown</td><td>8 × 8</td><td class="num">8</td><td class="num">104</td><td class="num">108</td><td class="num">255</td><td class="num">100</td><td class="num">108</td></tr><tr><td>Mars</td><td>Heuristic</td><td>9 × 32</td><td class="num">32</td><td class="num">207</td><td class="num">226</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">n/a</td></tr></tbody></table></div>
+
+<div class="callout-note"><p>Notes from the original survey: the Rijndael (AES) S-box functions
+are also affine-equivalent to those of the Camellia S-boxes (the same primitive polynomial is
+used to construct each), and to those of the Square S-box. "n/a" marks S-boxes with more
+outputs than inputs, where the XOR-combination analysis was not carried out.</p></div>
+</main>
+<footer class="site-footer"><div class="foot-inner">
+<span>© Dr Joanne Fuller · <a href="https://orcid.org/0000-0002-5221-3505" rel="me noopener">ORCID</a> · <a href="https://scholar.google.com/citations?user=aCp_g7IAAAAJ&amp;hl=en" rel="me noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">LinkedIn</a></span>
+<span>Content and data licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a>: please <a href="equivalence-classes.html#cite">cite</a> when reusing</span>
+</div></footer>
+</body>
+</html>

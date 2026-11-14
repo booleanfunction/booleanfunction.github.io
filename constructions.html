@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constructions and Search — Boolean Functions for Cryptography</title>
+<meta name="description" content="A bent function construction, the Boolean terrain, dynamic hill climbing for balanced 8-input functions of nonlinearity 116, and the history of heuristic search at QUT.">
+<meta name="author" content="Joanne Fuller">
+<link rel="canonical" href="https://booleanfunction.org/constructions.html">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="style.css?v=c9669768">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site-head"><a class="masthead-title" href="index.html">Boolean Functions for Cryptography</a><nav class="masthead-nav" aria-label="Main"><a class="navlink" href="index.html">Home</a><a class="navlink" href="basics.html">Basics</a><details class="navgroup"><summary class="navlink">Classes</summary><div class="navmenu"><a href="equivalence-classes.html">Equivalence classes &amp; data</a><a href="class-sizes.html">Class sizes</a><a href="connectivity.html">Connectivity</a></div></details><details class="navgroup"><summary class="navlink active">Research</summary><div class="navmenu"><a href="constructions.html" aria-current="page">Constructions &amp; search</a><a href="sboxes.html">S-boxes &amp; AES</a><a href="records.html">Records &amp; open problems</a><a href="efficient-implementation.html">Efficient implementation</a></div></details><details class="navgroup"><summary class="navlink">Tools</summary><div class="navmenu"><a href="explore.html">Class Graph Explorer</a><a href="analyse.html">Function Analyser</a></div></details><a class="navlink" href="publications.html">Publications</a><a class="navlink" href="learning.html">Learning</a></nav></header>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details.navgroup[open]').forEach(function(d){d.removeAttribute('open');});});document.addEventListener('toggle',function(e){var t=e.target;if(t.matches&&t.matches('details.navgroup')&&t.open)document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(d!==t)d.removeAttribute('open');});},true);</script>
+<main class="container">
+<h1>Constructions and Search</h1>
+<p>Recognising a good Boolean function is easy; <em>finding</em> one is hard. There are
+$2^{2^n}$ functions of $n$ inputs, and the cryptographically strong ones are a vanishingly small
+fraction. This page describes the two construction methods developed in the PhD research
+(Chapter 5 of the <a href="https://eprints.qut.edu.au/15828/">thesis</a>), the picture of the
+"Boolean terrain" that motivated them, and the history of heuristic search at QUT.
+Every example function below links to the <a href="analyse.html">Function Analyser</a>, so
+you can check it yourself.</p>
+
+<h2>Why random search fails</h2>
+<p>A million random balanced functions were generated for each $n$. On average they fall far short
+of the best known values: for $n = 8$, the average nonlinearity is 103.5, against a best known 116.</p>
+<details><summary><strong>Average properties of random balanced functions</strong> ($10^6$ samples per $n$)</summary>
+<div class="table-scroll"><table><thead><tr><th class="num">n</th><th class="num">average nonlinearity</th><th class="num">average degree</th><th class="num">average acmax</th></tr></thead><tbody><tr><td class="num">6</td><td class="num">21.5</td><td class="num">5.0</td><td class="num">27.9</td></tr><tr><td class="num">7</td><td class="num">47.9</td><td class="num">6.0</td><td class="num">43.8</td></tr><tr><td class="num">8</td><td class="num">103.5</td><td class="num">7.0</td><td class="num">67.6</td></tr><tr><td class="num">9</td><td class="num">219.2</td><td class="num">8.0</td><td class="num">102.8</td></tr><tr><td class="num">10</td><td class="num">456.8</td><td class="num">9.0</td><td class="num">154.7</td></tr><tr><td class="num">11</td><td class="num">941.9</td><td class="num">10.0</td><td class="num">231.2</td></tr><tr><td class="num">12</td><td class="num">1926.3</td><td class="num">11.0</td><td class="num">343.4</td></tr><tr><td class="num">13</td><td class="num">3916.2</td><td class="num">12.0</td><td class="num">507.8</td></tr><tr><td class="num">14</td><td class="num">7927.4</td><td class="num">13.0</td><td class="num">747.7</td></tr><tr><td class="num">15</td><td class="num">15995.5</td><td class="num">14.0</td><td class="num">1098.4</td></tr><tr><td class="num">16</td><td class="num">32199.1</td><td class="num">15.0</td><td class="num">1609.1</td></tr></tbody></table></div>
+</details>
+
+<h2>1. A new construction of bent functions</h2>
+<p>Bent functions have the maximum possible nonlinearity for even $n$. The construction rests on a
+simple property proved in the thesis: split a function's truth table into two halves along any
+non-zero direction $\omega$. Then</p>
+<p style="text-align:center"><em>a function is bent if and only if, in every non-zero direction,
+exactly one of the two halves is balanced.</em></p>
+<p>Together with the bound $\deg f \le n/2$ for bent functions, this gives a fast filter:</p>
+<ol>
+<li>Start from a quadratic bent function, $x_1x_{n/2+1} \oplus x_2x_{n/2+2} \oplus \cdots$.</li>
+<li>Try adding ANF terms of degree 3 up to a chosen maximum (at most $n/2$), starting from a random
+position.</li>
+<li>Discard any term that breaks the weight or "half balanced" conditions in the $n$ unit
+directions, which is cheap to test. Only the survivors need a full Walsh transform.</li>
+<li>Keep the term if the result is still bent, and repeat to build a chain of bent functions of
+increasing degree.</li>
+</ol>
+<p>On a 500 MHz Pentium III in 2003 this produced bent functions for $n = 8$ to $16$, at speeds from
+under a millisecond to about 4 seconds per function.</p>
+<details><summary><strong>Construction results</strong> (bent functions produced per run)</summary>
+<div class="table-scroll"><table><thead><tr><th class="num">n</th><th class="num">max degree</th><th class="num">bent functions</th><th class="num">ms per function</th></tr></thead><tbody><tr><td class="num">8</td><td class="num">3</td><td class="num">12</td><td class="num">0</td></tr><tr><td class="num">8</td><td class="num">4</td><td class="num">17</td><td class="num">0.59</td></tr><tr><td class="num">10</td><td class="num">3</td><td class="num">19</td><td class="num">0.63</td></tr><tr><td class="num">10</td><td class="num">4</td><td class="num">32</td><td class="num">1.56</td></tr><tr><td class="num">10</td><td class="num">5</td><td class="num">51</td><td class="num">1.76</td></tr><tr><td class="num">12</td><td class="num">3</td><td class="num">37</td><td class="num">2.16</td></tr><tr><td class="num">12</td><td class="num">4</td><td class="num">56</td><td class="num">6.07</td></tr><tr><td class="num">12</td><td class="num">5</td><td class="num">78</td><td class="num">17.97</td></tr><tr><td class="num">12</td><td class="num">6</td><td class="num">66</td><td class="num">19.58</td></tr><tr><td class="num">14</td><td class="num">3</td><td class="num">71</td><td class="num">10.01</td></tr><tr><td class="num">14</td><td class="num">4</td><td class="num">57</td><td class="num">111.04</td></tr><tr><td class="num">14</td><td class="num">5</td><td class="num">118</td><td class="num">110.25</td></tr><tr><td class="num">14</td><td class="num">6</td><td class="num">187</td><td class="num">165.32</td></tr><tr><td class="num">14</td><td class="num">7</td><td class="num">146</td><td class="num">404.27</td></tr><tr><td class="num">16</td><td class="num">3</td><td class="num">113</td><td class="num">52.38</td></tr><tr><td class="num">16</td><td class="num">4</td><td class="num">165</td><td class="num">248.36</td></tr><tr><td class="num">16</td><td class="num">5</td><td class="num">292</td><td class="num">332.22</td></tr><tr><td class="num">16</td><td class="num">6</td><td class="num">365</td><td class="num">930.08</td></tr><tr><td class="num">16</td><td class="num">7</td><td class="num">424</td><td class="num">2361.32</td></tr><tr><td class="num">16</td><td class="num">8</td><td class="num">339</td><td class="num">3947.06</td></tr></tbody></table></div>
+</details>
+<h3>How many classes does it reach?</h3>
+<p>A construction is only as useful as the variety it produces: any one function generates its whole
+affine class, so the real measure is how many <em>classes</em> a method reaches. The thesis
+classified the output by affine equivalence, giving lower bounds on the number of bent classes.
+For comparison, $n = 6$ has exactly 4.</p>
+<div class="table-scroll"><table><thead><tr><th class="num">n</th><th class="num">degree 2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7</th><th class="num">total classes found</th></tr></thead><tbody><tr><td class="num">8</td><td class="num">1</td><td class="num">3</td><td class="num">10</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">14</td></tr><tr><td class="num">10</td><td class="num">1</td><td class="num">7</td><td class="num">11</td><td class="num">27</td><td class="num">–</td><td class="num">–</td><td class="num">46</td></tr><tr><td class="num">12</td><td class="num">1</td><td class="num">7</td><td class="num">20</td><td class="num">32</td><td class="num">56</td><td class="num">–</td><td class="num">116</td></tr><tr><td class="num">14</td><td class="num">1</td><td class="num">9</td><td class="num">26</td><td class="num">43</td><td class="num">71</td><td class="num">39</td><td class="num">189</td></tr></tbody></table></div>
+<details><summary><strong>The 14 bent classes found for $n = 8$</strong>, with example functions</summary>
+<div class="table-scroll"><table><thead><tr><th class="num">class</th><th class="num">degree</th><th>example (8 × 32-bit words)</th></tr></thead><tbody><tr><td class="num">1</td><td class="num">2</td><td><a href="analyse.html?tt=0x2BE74D7E%2C0x17DB8EBD%2C0x24E8BD8E%2C0x18D47E4D%2C0x4271DB17%2C0x7E4D18D4%2C0xB281D418%2C0x8EBD17DB" title="Open in the Function Analyser"><code>0x2BE74D7E, 0x17DB8EBD, 0x24E8BD8E, 0x18D47E4D, 0x4271DB17, 0x7E4D18D4, 0xB281D418, 0x8EBD17DB</code></a></td></tr><tr><td class="num">2</td><td class="num">3</td><td><a href="analyse.html?tt=0x8B12DE47%2C0x47211274%2C0x48D11D84%2C0xD1B784E2%2C0x7B1D2E48%2C0xB72EE27B%2C0x47211274%2C0xDE478B12" title="Open in the Function Analyser"><code>0x8B12DE47, 0x47211274, 0x48D11D84, 0xD1B784E2, 0x7B1D2E48, 0xB72EE27B, 0x47211274, 0xDE478B12</code></a></td></tr><tr><td class="num">3</td><td class="num">3</td><td><a href="analyse.html?tt=0x8B12DE47%2C0x47741221%2C0x59C00C95%2C0xC0F395A6%2C0x7B1D2E48%2C0xB77BE22E%2C0x56300365%2C0xCF039A56" title="Open in the Function Analyser"><code>0x8B12DE47, 0x47741221, 0x59C00C95, 0xC0F395A6, 0x7B1D2E48, 0xB77BE22E, 0x56300365, 0xCF039A56</code></a></td></tr><tr><td class="num">4</td><td class="num">3</td><td><a href="analyse.html?tt=0x00660F96%2C0xF069FF99%2C0xC35ACCAA%2C0xC3A5CC55%2C0x69FF99F0%2C0x99F069FF%2C0xA533AAC3%2C0xA5CCAA3C" title="Open in the Function Analyser"><code>0x00660F96, 0xF069FF99, 0xC35ACCAA, 0xC3A5CC55, 0x69FF99F0, 0x99F069FF, 0xA533AAC3, 0xA5CCAA3C</code></a></td></tr><tr><td class="num">5</td><td class="num">4</td><td><a href="analyse.html?tt=0xD17BF9AC%2C0x2E84ACF9%2C0x2B81DE8B%2C0x2B817421%2C0x7BD15306%2C0x842E0653%2C0x812B7421%2C0x812BDE8B" title="Open in the Function Analyser"><code>0xD17BF9AC, 0x2E84ACF9, 0x2B81DE8B, 0x2B817421, 0x7BD15306, 0x842E0653, 0x812B7421, 0x812BDE8B</code></a></td></tr><tr><td class="num">6</td><td class="num">4</td><td><a href="analyse.html?tt=0xD17BF9AC%2C0xA60C2471%2C0xE74DDE8B%2C0x6FC5FCA9%2C0x7BD15306%2C0x0CA68EDB%2C0x4DE77421%2C0xC56F5603" title="Open in the Function Analyser"><code>0xD17BF9AC, 0xA60C2471, 0xE74DDE8B, 0x6FC5FCA9, 0x7BD15306, 0x0CA68EDB, 0x4DE77421, 0xC56F5603</code></a></td></tr><tr><td class="num">7</td><td class="num">4</td><td><a href="analyse.html?tt=0x9669F550%2C0x996650F5%2C0x33CCAFF5%2C0x3CC30A50%2C0xC9C9500A%2C0x6C6C0A50%2C0x63630AAF%2C0xC6C650F5" title="Open in the Function Analyser"><code>0x9669F550, 0x996650F5, 0x33CCAFF5, 0x3CC30A50, 0xC9C9500A, 0x6C6C0A50, 0x63630AAF, 0xC6C650F5</code></a></td></tr><tr><td class="num">8</td><td class="num">4</td><td><a href="analyse.html?tt=0xBD24B22B%2C0x7E187117%2C0xB117BE18%2C0x8DD482DB%2C0x81188E17%2C0x42244D2B%2C0x8D2B8224%2C0xB1E8BEE7" title="Open in the Function Analyser"><code>0xBD24B22B, 0x7E187117, 0xB117BE18, 0x8DD482DB, 0x81188E17, 0x42244D2B, 0x8D2B8224, 0xB1E8BEE7</code></a></td></tr><tr><td class="num">9</td><td class="num">4</td><td><a href="analyse.html?tt=0xBD24B22B%2C0xBED8B1D7%2C0xB117BE18%2C0x4D14421B%2C0x81188E17%2C0x82E48DEB%2C0x8D2B8224%2C0x71287E27" title="Open in the Function Analyser"><code>0xBD24B22B, 0xBED8B1D7, 0xB117BE18, 0x4D14421B, 0x81188E17, 0x82E48DEB, 0x8D2B8224, 0x71287E27</code></a></td></tr><tr><td class="num">10</td><td class="num">4</td><td><a href="analyse.html?tt=0xFDA4F2AB%2C0xC258CD57%2C0x0D570258%2C0xCD54C25B%2C0x31983E97%2C0xFE64F16B%2C0xC19BCE94%2C0xF198FE97" title="Open in the Function Analyser"><code>0xFDA4F2AB, 0xC258CD57, 0x0D570258, 0xCD54C25B, 0x31983E97, 0xFE64F16B, 0xC19BCE94, 0xF198FE97</code></a></td></tr><tr><td class="num">11</td><td class="num">4</td><td><a href="analyse.html?tt=0xF60650A0%2C0x50A0F505%2C0x0AFA53A3%2C0xAC5CF606%2C0x9A6A33C3%2C0xC3336999%2C0xC6369060%2C0x9F6FCA3A" title="Open in the Function Analyser"><code>0xF60650A0, 0x50A0F505, 0x0AFA53A3, 0xAC5CF606, 0x9A6A33C3, 0xC3336999, 0xC6369060, 0x9F6FCA3A</code></a></td></tr><tr><td class="num">12</td><td class="num">4</td><td><a href="analyse.html?tt=0x8F7F26D6%2C0xBC4C1AEA%2C0x7C8C15E5%2C0x40B026D6%2C0x50A036C6%2C0x93630AFA%2C0x5CACFA0A%2C0x9060C939" title="Open in the Function Analyser"><code>0x8F7F26D6, 0xBC4C1AEA, 0x7C8C15E5, 0x40B026D6, 0x50A036C6, 0x93630AFA, 0x5CACFA0A, 0x9060C939</code></a></td></tr><tr><td class="num">13</td><td class="num">4</td><td><a href="analyse.html?tt=0x659AA956%2C0x6A95A659%2C0xFCFCCFCF%2C0xF3F3C0C0%2C0x95955959%2C0x6565A9A9%2C0x00FFCC33%2C0x3CC30FF0" title="Open in the Function Analyser"><code>0x659AA956, 0x6A95A659, 0xFCFCCFCF, 0xF3F3C0C0, 0x95955959, 0x6565A9A9, 0x00FFCC33, 0x3CC30FF0</code></a></td></tr><tr><td class="num">14</td><td class="num">4</td><td><a href="analyse.html?tt=0xF13D68A4%2C0x0EC2975B%2C0x6C55390F%2C0x6C55390F%2C0x32546701%2C0x67AB32FE%2C0x635A36FF%2C0xC95A9CFF" title="Open in the Function Analyser"><code>0xF13D68A4, 0x0EC2975B, 0x6C55390F, 0x6C55390F, 0x32546701, 0x67AB32FE, 0x635A36FF, 0xC95A9CFF</code></a></td></tr></tbody></table></div>
+</details>
+<p class="fa-muted">These were the counts reached in 2003; they are lower bounds, not complete
+classifications.</p>
+
+<h2>2. The Boolean terrain</h2>
+<p>Hill climbing improves a function by small truth-table changes. Changing one bit moves every Walsh
+value by $\pm 2$; changing two bits (one 0 and one 1, so the weight is unchanged) moves each by
+$-4$, $0$ or $+4$, so nonlinearity rises by 2, stays level, or falls by 2. For each function, the
+possible two-bit changes therefore split into an <strong>improvement set</strong>, a
+<strong>static set</strong> and a <strong>reduction set</strong>. Which sets are non-empty describes
+the local shape of the landscape:</p>
+<div class="table-scroll"><table><thead><tr><th>shape</th><th>improvement</th><th>static</th><th>reduction</th></tr></thead><tbody><tr><td>peak</td><td>–</td><td>–</td><td>✓</td></tr><tr><td>plateau</td><td>–</td><td>✓</td><td>–</td></tr><tr><td>ridge</td><td>–</td><td>✓</td><td>✓</td></tr><tr><td>trough</td><td>✓</td><td>–</td><td>–</td></tr><tr><td>saddle point</td><td>✓</td><td>–</td><td>✓</td></tr><tr><td>valley</td><td>✓</td><td>✓</td><td>–</td></tr><tr><td>slope</td><td>✓</td><td>✓</td><td>✓</td></tr></tbody></table></div>
+<p>Surveys of this terrain for $n = 4$, $5$ and $6$, and of the functions met during searches at
+$n = 8$, show that most functions sit on <em>slopes</em>, but as
+nonlinearity rises the improvement set shrinks to nothing and highly nonlinear functions sit on
+<strong>ridges</strong>. That is exactly where ordinary hill climbing stops.</p>
+
+<h2>3. Dynamic hill climbing</h2>
+<p><em>Strong</em> hill climbing (Millan, Clark and Dawson, 1997) only accepts improving moves, so it
+halts at the first ridge. <em>Weak</em> hill climbing (1999) also accepts level moves, but rarely
+finds the few improving ones. <strong>Dynamic hill climbing</strong> switches between the two: it
+takes an improving move whenever one exists, and otherwise walks along the ridge with level moves
+(up to a limit), checking for a new improving move at every step.</p>
+<p>For balanced functions of 8 inputs, over 1,000 runs of each method:</p>
+<div class="table-scroll"><table><thead><tr><th class="num">nonlinearity</th><th class="num">random</th><th class="num">strong HC</th><th class="num">weak HC</th><th class="num">dynamic HC</th></tr></thead><tbody><tr><td class="num">88</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">90</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">92</td><td class="num">5</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">94</td><td class="num">16</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">96</td><td class="num">38</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">98</td><td class="num">95</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">100</td><td class="num">191</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">102</td><td class="num">318</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">104</td><td class="num">267</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">106</td><td class="num">64</td><td class="num">5</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">108</td><td class="num">4</td><td class="num">190</td><td class="num">0</td><td class="num">0</td></tr><tr><td class="num">110</td><td class="num">0</td><td class="num">505</td><td class="num">38</td><td class="num">0</td></tr><tr><td class="num">112</td><td class="num">0</td><td class="num">300</td><td class="num">962</td><td class="num">13</td></tr><tr><td class="num">114</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">613</td></tr><tr><td class="num">116</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">374</td></tr></tbody></table></div>
+<p>Average final nonlinearity (computed from the table): random 101.6, strong
+110.2, weak 111.9, <strong>dynamic 114.7</strong>. Only dynamic hill climbing
+reached 114 and 116, and it reached 116, the best known for balanced 8-input functions, in
+<strong>374 of 1,000 runs</strong>.</p>
+<p>Every nonlinearity-116 function found sat at an isolated <strong>peak</strong>: no two-bit change
+kept it at 116. The thesis noted that if this holds for all such functions, then balanced functions
+with nonlinearity 118 cannot exist. Whether they do remains an
+<a href="records.html">open problem</a>.</p>
+<p>Classifying the output found <strong>4,797 distinct classes</strong> of balanced nonlinearity-116
+functions. A modified version that preserves correlation immunity produced 1-resilient
+(8, 1, 6, 116) functions; ten example classes are below. The same approach, combined with
+concatenation, gave a 12-input 1-resilient function of degree 10 and nonlinearity 1,992, the best
+known at the time (since improved).</p>
+<details><summary><strong>Ten (8, 1, 6, 116) classes</strong>: balanced, 1-resilient, degree 6, nonlinearity 116</summary>
+<div class="table-scroll"><table><thead><tr><th class="num">class</th><th class="num">acmax</th><th>example (8 × 32-bit words)</th></tr></thead><tbody><tr><td class="num">1</td><td class="num">32</td><td><a href="analyse.html?tt=0xC66FC7A0%2C0xB8899B46%2C0xE8E3ED41%2C0x2063B4ED%2C0x5EA1C35D%2C0xF4390587%2C0x33359850%2C0x0ABD7B8F" title="Open in the Function Analyser"><code>0xC66FC7A0, 0xB8899B46, 0xE8E3ED41, 0x2063B4ED, 0x5EA1C35D, 0xF4390587, 0x33359850, 0x0ABD7B8F</code></a></td></tr><tr><td class="num">2</td><td class="num">32</td><td><a href="analyse.html?tt=0x9DE5BC48%2C0x64D4A343%2C0x800355F2%2C0xBDB3EE6A%2C0x18F78F1E%2C0xD90B82AD%2C0x2C374E79%2C0xB57027C0" title="Open in the Function Analyser"><code>0x9DE5BC48, 0x64D4A343, 0x800355F2, 0xBDB3EE6A, 0x18F78F1E, 0xD90B82AD, 0x2C374E79, 0xB57027C0</code></a></td></tr><tr><td class="num">3</td><td class="num">32</td><td><a href="analyse.html?tt=0xA374983D%2C0x4D768EB9%2C0xD0FC0589%2C0xB7B06CC1%2C0x42CEFFA3%2C0x0E90A702%2C0x145575A9%2C0xBB97928F" title="Open in the Function Analyser"><code>0xA374983D, 0x4D768EB9, 0xD0FC0589, 0xB7B06CC1, 0x42CEFFA3, 0x0E90A702, 0x145575A9, 0xBB97928F</code></a></td></tr><tr><td class="num">4</td><td class="num">32</td><td><a href="analyse.html?tt=0xA633674A%2C0xC56E36DB%2C0xB88DF74A%2C0x4AEB0480%2C0x09C8B263%2C0xEAD07345%2C0x9F0591AF%2C0x705F74D6" title="Open in the Function Analyser"><code>0xA633674A, 0xC56E36DB, 0xB88DF74A, 0x4AEB0480, 0x09C8B263, 0xEAD07345, 0x9F0591AF, 0x705F74D6</code></a></td></tr><tr><td class="num">5</td><td class="num">32</td><td><a href="analyse.html?tt=0xC25E9ECD%2C0xCBA2D991%2C0x44133A1A%2C0x80FBDBB2%2C0x53875D8E%2C0x981607B8%2C0x4DB4F670%2C0x7F6F40A1" title="Open in the Function Analyser"><code>0xC25E9ECD, 0xCBA2D991, 0x44133A1A, 0x80FBDBB2, 0x53875D8E, 0x981607B8, 0x4DB4F670, 0x7F6F40A1</code></a></td></tr><tr><td class="num">6</td><td class="num">32</td><td><a href="analyse.html?tt=0xD46017F8%2C0xBB512E20%2C0x9D36E57A%2C0x9CBD116A%2C0x7CCD561F%2C0x1FC26876%2C0x04C2926A%2C0x4A1FBDAA" title="Open in the Function Analyser"><code>0xD46017F8, 0xBB512E20, 0x9D36E57A, 0x9CBD116A, 0x7CCD561F, 0x1FC26876, 0x04C2926A, 0x4A1FBDAA</code></a></td></tr><tr><td class="num">7</td><td class="num">32</td><td><a href="analyse.html?tt=0xF0E47A90%2C0x11C19FC2%2C0xFF6A2BA1%2C0xC49E4A3E%2C0xF01C0E9F%2C0x19DFD43E%2C0x3619C255%2C0x2E299395" title="Open in the Function Analyser"><code>0xF0E47A90, 0x11C19FC2, 0xFF6A2BA1, 0xC49E4A3E, 0xF01C0E9F, 0x19DFD43E, 0x3619C255, 0x2E299395</code></a></td></tr><tr><td class="num">8</td><td class="num">32</td><td><a href="analyse.html?tt=0xF0C8283E%2C0xF06E3D20%2C0x23EDD6FB%2C0xA464254F%2C0x66075D1D%2C0x9FE8CAD9%2C0x38C73302%2C0xA6537A45" title="Open in the Function Analyser"><code>0xF0C8283E, 0xF06E3D20, 0x23EDD6FB, 0xA464254F, 0x66075D1D, 0x9FE8CAD9, 0x38C73302, 0xA6537A45</code></a></td></tr><tr><td class="num">9</td><td class="num">32</td><td><a href="analyse.html?tt=0x981E36BA%2C0x8BD75C65%2C0x7F80FADC%2C0x8D80050F%2C0x71D84493%2C0x25706EF2%2C0xC1BE1A23%2C0xFEC3169B" title="Open in the Function Analyser"><code>0x981E36BA, 0x8BD75C65, 0x7F80FADC, 0x8D80050F, 0x71D84493, 0x25706EF2, 0xC1BE1A23, 0xFEC3169B</code></a></td></tr><tr><td class="num">10</td><td class="num">32</td><td><a href="analyse.html?tt=0xCB39E0B8%2C0xCE7D4CEC%2C0x2D5963E7%2C0x00A4DB22%2C0x920F29A5%2C0xD83A5A91%2C0x4155AFC3%2C0xBF57F124" title="Open in the Function Analyser"><code>0xCB39E0B8, 0xCE7D4CEC, 0x2D5963E7, 0x00A4DB22, 0x920F29A5, 0xD83A5A91, 0x4155AFC3, 0xBF57F124</code></a></td></tr></tbody></table></div>
+</details>
+
+<h2>A short history of heuristic search at QUT</h2>
+<p>The Information Security Research Centre at QUT was an early centre for heuristic design of
+cryptographic Boolean functions:</p>
+<ul class="timeline">
+<li><strong>1997.</strong> W. Millan, A. Clark and E. Dawson introduce hill climbing
+("Smart Hill Climbing Finds Better Boolean Functions", SAC 1997) and a genetic algorithm
+("An Effective Genetic Algorithm for Finding Highly Nonlinear Boolean Functions", ICICS 1997) for
+cryptographic Boolean functions. PhD theses by Millan (1997) and Clark (1998) follow.</li>
+<li><strong>1998–1999.</strong> Heuristic design of balanced functions (Eurocrypt 1998) and weak hill
+climbing (ACISP 1999), from the same group.</li>
+<li><strong>2000.</strong> J. A. Clark and J. L. Jacob introduce simulated annealing for Boolean
+function design (ACISP 2000).</li>
+<li><strong>2002.</strong> Efficient algorithms for Boolean function analysis (Fuller, Millan and
+Dawson, AWOCA 2002): the fast transforms that made large-scale searches and the exhaustive
+$n = 6$ classification practical. See <a href="efficient-implementation.html">Efficient
+Implementation</a>.</li>
+<li><strong>2003.</strong> "Evolutionary Generation of Bent Functions for Cryptography" (Fuller, Millan
+and Dawson) and "New Concepts in Evolutionary Search for Boolean Functions in Cryptology" (Millan,
+Fuller and Dawson), both at the IEEE Congress on Evolutionary Computation. The PhD thesis
+(December 2003) presents the bent construction, the terrain classification and dynamic hill
+climbing above, and analyses the output of each construction by affine equivalence class.</li>
+</ul>
+<p>Try a simple version yourself: the <a href="explore.html">Class Graph Explorer</a> animates a
+hill climb through the classes for $n \le 5$.</p>
+</main>
+<footer class="site-footer"><div class="foot-inner">
+<span>© Dr Joanne Fuller · <a href="https://orcid.org/0000-0002-5221-3505" rel="me noopener">ORCID</a> · <a href="https://scholar.google.com/citations?user=aCp_g7IAAAAJ&amp;hl=en" rel="me noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">LinkedIn</a></span>
+<span>Content and data licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a>: please <a href="equivalence-classes.html#cite">cite</a> when reusing</span>
+</div></footer>
+</body>
+</html>

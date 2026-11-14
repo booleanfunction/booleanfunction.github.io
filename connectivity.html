@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Theorem of Connectivity — Boolean Functions for Cryptography</title>
+<meta name="description" content="The theorem of connectivity: how affine equivalence classes connect through their 1-local neighbourhoods.">
+<meta name="author" content="Joanne Fuller">
+<link rel="canonical" href="https://booleanfunction.org/connectivity.html">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="style.css?v=c9669768">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site-head"><a class="masthead-title" href="index.html">Boolean Functions for Cryptography</a><nav class="masthead-nav" aria-label="Main"><a class="navlink" href="index.html">Home</a><a class="navlink" href="basics.html">Basics</a><details class="navgroup"><summary class="navlink active">Classes</summary><div class="navmenu"><a href="equivalence-classes.html">Equivalence classes &amp; data</a><a href="class-sizes.html">Class sizes</a><a href="connectivity.html" aria-current="page">Connectivity</a></div></details><details class="navgroup"><summary class="navlink">Research</summary><div class="navmenu"><a href="constructions.html">Constructions &amp; search</a><a href="sboxes.html">S-boxes &amp; AES</a><a href="records.html">Records &amp; open problems</a><a href="efficient-implementation.html">Efficient implementation</a></div></details><details class="navgroup"><summary class="navlink">Tools</summary><div class="navmenu"><a href="explore.html">Class Graph Explorer</a><a href="analyse.html">Function Analyser</a></div></details><a class="navlink" href="publications.html">Publications</a><a class="navlink" href="learning.html">Learning</a></nav></header>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details.navgroup[open]').forEach(function(d){d.removeAttribute('open');});});document.addEventListener('toggle',function(e){var t=e.target;if(t.matches&&t.matches('details.navgroup')&&t.open)document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(d!==t)d.removeAttribute('open');});},true);</script>
+<main class="container">
+<h1>The Theorem of Connectivity</h1>
+<p>Affine equivalence groups functions that share the same cryptographic properties, but it
+says nothing about how those classes sit <em>relative to one another</em>. The theorem of
+connectivity supplies exactly that missing structure: it describes how a function relates to
+its immediate neighbours — the functions one bit-flip away in the truth table — and shows that
+this local structure is itself an invariant of the equivalence class. The result lets us view
+the whole Boolean space not as a flat collection of $2^{2^{n}}$ functions but as a set of
+<strong>connected equivalence classes</strong> — the cosets of $\mathrm{RM}(1,n)$ under the
+affine group.</p>
+
+<h2>The 1-local neighbourhood</h2>
+<p>The starting point is the immediate neighbourhood of a function: everything at Hamming
+distance one from it.</p>
+<div class="callout-note"><p><strong>Definition.</strong> The <em>1-local neighbourhood</em> of
+a Boolean function $f \in \mathcal{B}_n$ consists of all $2^n$ functions $f_{(i)}$,
+$i \in \mathbf{Z}_2^{\,n}$, with $\operatorname{dist}(f, f_{(i)}) = 1$. We say
+$f_{(i)}$ is <em>connected to</em> $f$:
+$$f_{(i)}(x) = \begin{cases} f(x) & x \neq i \\ f(x) \oplus 1 & x = i. \end{cases}$$</p></div>
+
+<h2>The theorem</h2>
+<p>The key result is that an affine transform maps neighbours to neighbours: if $f$ and $g$ are
+affine equivalent under some transform, then every neighbour of $f$ corresponds — under that
+<em>same</em> transform — to a neighbour of $g$.</p>
+<div class="callout-note"><p><strong>Theorem (Connectivity).</strong> Let $f_{(i)}$ be defined
+as above. Then for $g(x) = f(\mathcal{D}x \oplus a) \oplus b \cdot x \oplus c$ there
+exists a connecting function $g_{(j)}$ such that
+$$g_{(j)}(x) = f_{(i)}(\mathcal{D}x \oplus a) \oplus b \cdot x \oplus c, \qquad
+j = \mathcal{D}^{-1}(i \oplus a), \qquad i = \mathcal{D}j \oplus a.$$</p></div>
+<p>Because $\mathcal{D}$ is non-singular this correspondence is a bijection, which gives the
+property that makes connectivity useful:</p>
+<div class="callout-note"><p><strong>Corollary.</strong> The 1-local neighbourhood of $g$ is a
+<em>permutation</em> of the 1-local neighbourhood of $f$. Repeating the argument extends this to
+any distance $m$: the $m$-local neighbourhood of $g$ is a permutation of that of $f$.</p></div>
+
+<h2>Connectivity between classes</h2>
+<p>Since neighbours are preserved, we can summarise a class by <em>which classes it connects
+to</em>, and how often. Every function in a class has the same connection profile. For $n = 3$,
+for instance, every single-bit change to a class-1 function yields a class-2 function; a class-2
+function has one change leading back to class 1 and seven leading to class 3.</p>
+
+<h3>Equivalence class connectivity, $n = 3$</h3>
+<div class="table-scroll"><table><thead><tr><th class="num">class</th><th>connecting class (frequency) distribution</th></tr></thead><tbody><tr><td class="num">1</td><td>C2(8)</td></tr><tr><td class="num">2</td><td>C1(1), C3(7)</td></tr><tr><td class="num">3</td><td>C2(8)</td></tr></tbody></table></div>
+
+<h3>Equivalence class connectivity, $n = 4$</h3>
+<div class="table-scroll"><table><thead><tr><th class="num">class</th><th>connecting class (frequency) distribution</th></tr></thead><tbody><tr><td class="num">1</td><td>C2(16)</td></tr><tr><td class="num">2</td><td>C1(1), C3(15)</td></tr><tr><td class="num">3</td><td>C2(2), C4(14)</td></tr><tr><td class="num">4</td><td>C3(3), C5(1), C6(12)</td></tr><tr><td class="num">5</td><td>C4(16)</td></tr><tr><td class="num">6</td><td>C4(8), C7(8)</td></tr><tr><td class="num">7</td><td>C6(15), C8(1)</td></tr><tr><td class="num">8</td><td>C7(16)</td></tr></tbody></table></div>
+
+<p>The $n = 5$ connectivity profile follows the same form across its 48 classes (see the
+<a href="equivalence-classes.html">equivalence class tables</a> for the classes themselves).</p>
+
+<h2>Class connection diagrams</h2>
+<p>Drawing one node per class and one branch per connection turns the space into a tree.
+Arranged by nonlinearity, the affine class sits at the root and the maximally nonlinear
+classes — including the bent classes for even $n$ — form the topmost leaves. The branches
+are sparse near the top (high-nonlinearity classes have few connections) and grow thicker
+toward the root, revealing the inherent shape of the Boolean space.</p>
+<div class="diagram-row">
+<figure class="diagram"><svg viewBox="0 0 300 250" role="img" aria-label="Tree of the three n=3 equivalence classes connected by single-bit changes, arranged by nonlinearity from the affine class at the root to class 3 at the top." xmlns="http://www.w3.org/2000/svg"><title>Class connection diagram, n = 3</title><desc>Tree of the three n=3 equivalence classes connected by single-bit changes, arranged by nonlinearity from the affine class at the root to class 3 at the top.</desc><text class="nl-axis" x="8" y="58">NL 2</text><text class="nl-axis" x="8" y="138">NL 1</text><text class="nl-axis" x="8" y="218">NL 0</text><line class="edge" x1="150" y1="210" x2="150" y2="130"/><line class="edge" x1="150" y1="130" x2="150" y2="50"/><g class="node root"><circle cx="150" cy="210" r="16"/><text x="150" y="215">1</text></g><g class="node"><circle cx="150" cy="130" r="16"/><text x="150" y="135">2</text></g><g class="node"><circle cx="150" cy="50" r="16"/><text x="150" y="55">3</text></g></svg><figcaption>Class connection diagram, n = 3</figcaption></figure>
+<figure class="diagram"><svg viewBox="0 0 360 410" role="img" aria-label="Tree of the eight n=4 equivalence classes connected by single-bit changes, arranged by nonlinearity from the affine class at the root to the bent class 8 at the top." xmlns="http://www.w3.org/2000/svg"><title>Class connection diagram, n = 4</title><desc>Tree of the eight n=4 equivalence classes connected by single-bit changes, arranged by nonlinearity from the affine class at the root to the bent class 8 at the top.</desc><text class="nl-axis" x="8" y="48">NL 6</text><text class="nl-axis" x="8" y="100">NL 5</text><text class="nl-axis" x="8" y="152">NL 4</text><text class="nl-axis" x="8" y="208">NL 3</text><text class="nl-axis" x="8" y="264">NL 2</text><text class="nl-axis" x="8" y="320">NL 1</text><text class="nl-axis" x="8" y="376">NL 0</text><line class="edge" x1="200" y1="372" x2="200" y2="316"/><line class="edge" x1="200" y1="316" x2="200" y2="260"/><line class="edge" x1="200" y1="260" x2="200" y2="204"/><line class="edge" x1="200" y1="204" x2="120" y2="148"/><line class="edge" x1="200" y1="204" x2="260" y2="148"/><line class="edge" x1="260" y1="148" x2="260" y2="92"/><line class="edge" x1="260" y1="92" x2="260" y2="40"/><g class="node root"><circle cx="200" cy="372" r="16"/><text x="200" y="377">1</text></g><g class="node"><circle cx="200" cy="316" r="16"/><text x="200" y="321">2</text></g><g class="node"><circle cx="200" cy="260" r="16"/><text x="200" y="265">3</text></g><g class="node"><circle cx="200" cy="204" r="16"/><text x="200" y="209">4</text></g><g class="node"><circle cx="120" cy="148" r="16"/><text x="120" y="153">5</text></g><g class="node"><circle cx="260" cy="148" r="16"/><text x="260" y="153">6</text></g><g class="node"><circle cx="260" cy="92" r="16"/><text x="260" y="97">7</text></g><g class="node bent"><circle cx="260" cy="40" r="16"/><text x="260" y="45">8</text></g></svg><figcaption>Class connection diagram, n = 4</figcaption></figure>
+</div>
+<div class="diagram-legend"><span class="key root"></span> affine class (root) <span class="key bent"></span> bent class</div>
+<p>For $\mathcal{B}_3$ the tree is a simple chain; for $\mathcal{B}_4$ it begins to
+branch, with class 5 forming a leaf at nonlinearity 4 and the bent class 8 at the very top.
+The diagram for the 48 classes of $\mathcal{B}_5$ is far richer but follows the same
+principle; only a partial, high-nonlinearity component is feasible for $\mathcal{B}_6$.</p>
+
+<h2>Why it matters</h2>
+<p>The connection profile is an affine invariant, so it is a powerful tool for telling classes
+apart and for navigating the space:</p>
+<ul>
+<li><strong>A non-exhaustive equivalence test.</strong> Two functions can be shown
+<em>inequivalent</em> by comparing their connecting-class distributions — the first
+distinguishing technique for Boolean functions of six or more inputs that does not require an
+exhaustive search for an affine transform. For $n = 6$, comparing distributions out to a
+distance of four gives complete class distinction.</li>
+<li><strong>Enumerating the classes.</strong> Starting from the constant-zero function and
+repeatedly examining connecting functions for new classes is guaranteed (by the theorem) to
+find them all. Run for $n = 6$, this independently verified the existence of exactly
+<strong>150,357</strong> equivalence classes and confirmed the set is complete.</li>
+<li><strong>A map of the space.</strong> The connections form a tree-like diagram of how the
+classes relate — a visual representation of the structure of $\mathcal{B}_3$,
+$\mathcal{B}_4$ and $\mathcal{B}_5$, and a partial map of $\mathcal{B}_6$.</li>
+</ul>
+<p>The theorem of connectivity was the foundation of the PhD research from which this site
+grew — the result that turns the unmanageable Boolean space into a navigable structure.</p>
+</main>
+<footer class="site-footer"><div class="foot-inner">
+<span>© Dr Joanne Fuller · <a href="https://orcid.org/0000-0002-5221-3505" rel="me noopener">ORCID</a> · <a href="https://scholar.google.com/citations?user=aCp_g7IAAAAJ&amp;hl=en" rel="me noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">LinkedIn</a></span>
+<span>Content and data licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a>: please <a href="equivalence-classes.html#cite">cite</a> when reusing</span>
+</div></footer>
+</body>
+</html>

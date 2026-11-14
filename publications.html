@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publications — Boolean Functions for Cryptography</title>
+<meta name="description" content="Publications on cryptographic Boolean function analysis and linear redundancy in the AES S-box.">
+<meta name="author" content="Joanne Fuller">
+<link rel="canonical" href="https://booleanfunction.org/publications.html">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="style.css?v=c9669768">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site-head"><a class="masthead-title" href="index.html">Boolean Functions for Cryptography</a><nav class="masthead-nav" aria-label="Main"><a class="navlink" href="index.html">Home</a><a class="navlink" href="basics.html">Basics</a><details class="navgroup"><summary class="navlink">Classes</summary><div class="navmenu"><a href="equivalence-classes.html">Equivalence classes &amp; data</a><a href="class-sizes.html">Class sizes</a><a href="connectivity.html">Connectivity</a></div></details><details class="navgroup"><summary class="navlink">Research</summary><div class="navmenu"><a href="constructions.html">Constructions &amp; search</a><a href="sboxes.html">S-boxes &amp; AES</a><a href="records.html">Records &amp; open problems</a><a href="efficient-implementation.html">Efficient implementation</a></div></details><details class="navgroup"><summary class="navlink">Tools</summary><div class="navmenu"><a href="explore.html">Class Graph Explorer</a><a href="analyse.html">Function Analyser</a></div></details><a class="navlink active" href="publications.html" aria-current="page">Publications</a><a class="navlink" href="learning.html">Learning</a></nav></header>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details.navgroup[open]').forEach(function(d){d.removeAttribute('open');});});document.addEventListener('toggle',function(e){var t=e.target;if(t.matches&&t.matches('details.navgroup')&&t.open)document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(d!==t)d.removeAttribute('open');});},true);</script>
+<main class="container">
+<h1>Publications</h1>
+<p>Publications from this research. Where a paper is freely available, a link is
+given; please consult the publisher of record for the version of record.</p>
+
+<h2>PhD thesis</h2>
+<div class="entry">
+<div class="ref-title">Analysis of Affine Equivalent Boolean Functions for Cryptography</div>
+<div class="ref-meta">J. Fuller. PhD thesis, Information Security Research Centre, Faculty of
+Information Technology, Queensland University of Technology, Brisbane, Australia, December 2003.
+Freely available from QUT ePrints:
+<a href="https://eprints.qut.edu.au/15828/1/Joanne_Fuller_Thesis.pdf">eprints.qut.edu.au/15828</a></div>
+<div class="ref-note">The source of the results on this site: efficient algorithms for Boolean
+function analysis; the complete affine equivalence classification for $n \le 6$; the
+<a href="connectivity.html">Theorem of Connectivity</a> between equivalence classes and, from it,
+the first non-exhaustive test for affine equivalence and a self-mapping constant that enables
+enumeration of the classes; new constructions for bent and for maximum-nonlinearity balanced
+8-input functions; and linear redundancy in S-boxes.</div>
+</div>
+
+<h2>Cryptographic Boolean functions</h2>
+<div class="entry">
+<div class="ref-title">Efficient Algorithms for Analysis of Cryptographic Boolean Functions</div>
+<div class="ref-meta">J. Fuller, W. Millan and E. Dawson. Australasian Workshop on
+Combinatorial Algorithms (AWOCA), Fraser Island, Australia, 2002.</div>
+<div class="ref-note">Implementation techniques for fast analysis of Boolean function
+cryptographic properties — the packing and transform methods behind the exhaustive $n = 6$
+classification. See <a href="efficient-implementation.html">Efficient Implementation</a>.</div>
+</div>
+<div class="entry">
+<div class="ref-title">Evolutionary Generation of Bent Functions for Cryptography</div>
+<div class="ref-meta">J. Fuller, W. Millan and E. Dawson. IEEE Congress on Evolutionary
+Computation (CEC 2003), Canberra, Australia, December 2003.</div>
+<div class="ref-note">Search methods that generate bent functions, analysed by the affine
+equivalence classes they reach.</div>
+</div>
+<div class="entry">
+<div class="ref-title">New Concepts in Evolutionary Search for Boolean Functions in Cryptology</div>
+<div class="ref-meta">W. Millan, J. Fuller and E. Dawson. IEEE Congress on Evolutionary
+Computation (CEC 2003), Canberra, Australia, December 2003.</div>
+<div class="ref-note">Applies the affine equivalence class structure from the thesis, including
+the self-mapping constant, to evolutionary search for cryptographic Boolean functions.</div>
+</div>
+
+<h2>Linear redundancy in the AES S-box</h2>
+<div class="entry">
+<div class="ref-title">On Linear Redundancy in the AES S-box</div>
+<div class="ref-meta">J. Fuller and W. Millan. IACR ePrint Archive, 2002.</div>
+<div class="ref-note">Analysis of linear redundancy structure in the AES substitution box.</div>
+</div>
+<div class="entry">
+<div class="ref-title">Linear Redundancy in S-boxes</div>
+<div class="ref-meta">J. Fuller and W. Millan. Fast Software Encryption (FSE), Lund, Sweden, 2003.</div>
+<div class="ref-note">The peer-reviewed presentation of the linear redundancy results, showing
+that the AES S-box (and others) exhibit linear redundancy — every output coordinate function
+is affine-equivalent to a single function. See the <a href="sboxes.html">S-box survey</a>.</div>
+</div>
+
+<h2>Stream ciphers</h2>
+<div class="entry">
+<div class="ref-title">The LILI-II Keystream Generator</div>
+<div class="ref-meta">A. Clark, E. Dawson, J. Fuller, J. Golić, H-J. Lee, W. Millan, S-J. Moon and
+L. Simpson. Australasian Conference on Information Security and Privacy (ACISP 2002), Lecture
+Notes in Computer Science 2384, pp. 25–39, Springer, 2002.</div>
+</div>
+
+<h2>Related work using this data</h2>
+<div class="entry">
+<div class="ref-title">The Multiplicative Complexity of 6-variable Boolean Functions</div>
+<div class="ref-meta">Ç. Çalık, M. Sönmez Türan and R. Peralta. IACR ePrint 2018/002.
+<a href="https://eprint.iacr.org/2018/002">eprint.iacr.org/2018/002</a></div>
+<div class="ref-note">Computes the multiplicative complexity (minimum AND-gate count) of all
+150,357 $n = 6$ equivalence classes — building on the classification published here. Relevant
+to lightweight cryptography and NIST standardisation work.</div>
+</div>
+
+<div class="callout-note"><p>If you use the $n = 6$ classification data, please cite the PhD
+thesis above (see <a href="equivalence-classes.html#cite">how to cite</a>). If you have used
+the data in your own work, I'd be glad to hear about it.</p></div>
+</main>
+<footer class="site-footer"><div class="foot-inner">
+<span>© Dr Joanne Fuller · <a href="https://orcid.org/0000-0002-5221-3505" rel="me noopener">ORCID</a> · <a href="https://scholar.google.com/citations?user=aCp_g7IAAAAJ&amp;hl=en" rel="me noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">LinkedIn</a></span>
+<span>Content and data licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a>: please <a href="equivalence-classes.html#cite">cite</a> when reusing</span>
+</div></footer>
+</body>
+</html>

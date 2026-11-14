@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning — Boolean Functions for Cryptography</title>
+<meta name="description" content="Concepts, foundational reading, and a curated list of openly available papers and datasets for Boolean functions in cryptography.">
+<meta name="author" content="Joanne Fuller">
+<link rel="canonical" href="https://booleanfunction.org/learning.html">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="style.css?v=c9669768">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site-head"><a class="masthead-title" href="index.html">Boolean Functions for Cryptography</a><nav class="masthead-nav" aria-label="Main"><a class="navlink" href="index.html">Home</a><a class="navlink" href="basics.html">Basics</a><details class="navgroup"><summary class="navlink">Classes</summary><div class="navmenu"><a href="equivalence-classes.html">Equivalence classes &amp; data</a><a href="class-sizes.html">Class sizes</a><a href="connectivity.html">Connectivity</a></div></details><details class="navgroup"><summary class="navlink">Research</summary><div class="navmenu"><a href="constructions.html">Constructions &amp; search</a><a href="sboxes.html">S-boxes &amp; AES</a><a href="records.html">Records &amp; open problems</a><a href="efficient-implementation.html">Efficient implementation</a></div></details><details class="navgroup"><summary class="navlink">Tools</summary><div class="navmenu"><a href="explore.html">Class Graph Explorer</a><a href="analyse.html">Function Analyser</a></div></details><a class="navlink" href="publications.html">Publications</a><a class="navlink active" href="learning.html" aria-current="page">Learning</a></nav></header>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details.navgroup[open]').forEach(function(d){d.removeAttribute('open');});});document.addEventListener('toggle',function(e){var t=e.target;if(t.matches&&t.matches('details.navgroup')&&t.open)document.querySelectorAll('details.navgroup[open]').forEach(function(d){if(d!==t)d.removeAttribute('open');});},true);</script>
+<main class="container">
+<h1>Learning</h1>
+<p>A short, opinionated set of starting points for getting into Boolean functions for
+cryptography. This list will grow.</p>
+
+<h2>Core concepts</h2>
+<p>A Boolean function $f : \{0,1\}^n \to \{0,1\}$ is judged for cryptographic use against a
+handful of properties:</p>
+<ul>
+<li><strong>Balance</strong> — equal numbers of zeros and ones in the truth table. A biased
+function leaks information.</li>
+<li><strong>Nonlinearity</strong> $\mathrm{NL}(f)$ — the Hamming distance to the nearest
+affine function; equivalently, the distance to the first-order Reed–Muller code
+$\mathrm{RM}(1,n)$. High nonlinearity resists linear approximation (linear cryptanalysis).</li>
+<li><strong>Algebraic degree</strong> — the degree of the ANF; the functions of degree at most
+$r$ form the Reed–Muller code $\mathrm{RM}(r,n)$. Low degree is exploitable.</li>
+<li><strong>Correlation immunity</strong> — statistical independence of the output from small
+subsets of inputs; essential for combining functions in stream ciphers.</li>
+<li><strong>Autocorrelation / propagation</strong> — how the function changes under input
+differences; related to the strict avalanche criterion.</li>
+<li><strong>Algebraic immunity</strong> — resistance to algebraic attacks (a post-2003
+criterion); the minimum degree of an annihilator of $f$ or $f \oplus 1$.</li>
+</ul>
+<p>These criteria interact and often conflict: improving one can worsen another. Designing a
+function that is simultaneously good across all of them — and provably so — is the central
+challenge.</p>
+
+<h2>Key transforms</h2>
+<ul>
+<li><strong>Walsh–Hadamard transform (WHT)</strong> — the spectral tool behind nonlinearity
+and correlation immunity.</li>
+<li><strong>Algebraic Normal Form (ANF)</strong> — the polynomial representation behind
+algebraic degree and algebraic immunity, computed via the Möbius transform.</li>
+<li><strong>Autocorrelation</strong> — derived from the WHT by the Wiener–Khinchin theorem.</li>
+</ul>
+<p>See <a href="efficient-implementation.html">Efficient Implementation</a> for how these are
+computed in practice.</p>
+
+<h2>Foundational reading</h2>
+<ul>
+<li><strong>O. S. Rothaus</strong>, <em>On Bent Functions</em>, J. Combinatorial Theory (A),
+1976 — the origin of bent functions and maximum nonlinearity.</li>
+<li><strong>T. Siegenthaler</strong>, <em>Correlation-Immunity of Nonlinear Combining
+Functions</em>, IEEE Trans. Information Theory, 1984 — introduces correlation immunity and the
+trade-off with degree.</li>
+<li><strong>W. Meier and O. Staffelbach</strong>, <em>Nonlinearity Criteria for Cryptographic
+Functions</em>, EUROCRYPT 1989.</li>
+<li><strong>N. Courtois and W. Meier</strong>, <em>Algebraic Attacks on Stream Ciphers with
+Linear Feedback</em>, EUROCRYPT 2003 — introduces algebraic immunity.</li>
+<li><strong>C. Carlet</strong>, <em>Boolean Functions for Cryptography and Coding Theory</em>,
+Cambridge University Press — a comprehensive modern reference that, as its title signals, treats
+the two fields together.</li>
+<li><strong>F. J. MacWilliams and N. J. A. Sloane</strong>, <em>The Theory of Error-Correcting
+Codes</em>, North-Holland, 1977 — the standard reference for Reed–Muller codes and their
+covering radii.</li>
+<li><strong>J. A. Maiorana</strong>, <em>A Classification of the Cosets of the Reed–Muller Code
+R(1,6)</em>, Mathematics of Computation, 1991 — the coding-theory enumeration of the 150,357
+affine equivalence classes for $n = 6$.</li>
+</ul>
+
+<h2>Tools</h2>
+<ul>
+<li>This site's <a href="equivalence-classes.html">equivalence class tables</a> — concrete
+examples with full property profiles for $n \le 6$.</li>
+<li>A modern open-source library implementing these properties is in development; details will
+be linked here when it is released.</li>
+<li>See <a href="#resources">Resources</a> below for a curated list of openly available
+papers and datasets.</li>
+</ul>
+
+<h2 id="resources">Resources: papers and datasets</h2>
+<p>A curated, growing list of openly available papers, datasets and references for Boolean
+functions in cryptography. Links point to canonical sources — author / arXiv preprints, IACR
+ePrint, PubMed Central, the AMS, publisher DOIs, and official code repositories. Entries marked
+<span class="res-tag">free</span> have free full text.</p>
+<p class="muted">This list grows over time. If a link breaks or you have a suggestion, please get
+in touch.</p>
+
+<h3>Textbooks &amp; surveys</h3>
+<ul>
+<li><a href="https://arxiv.org/abs/2105.10386">R. O'Donnell, <em>Analysis of Boolean
+Functions</em></a> (2014; 2021 arXiv edition) — <span class="res-tag">free</span>. The standard
+modern textbook; ~500 exercises.</li>
+<li><a href="https://link.springer.com/article/10.1007/s10623-015-0145-8">C. Carlet &amp;
+S. Mesnager, "Four Decades of Research on Bent Functions"</a>, <em>Des. Codes Cryptogr.</em> 78
+(2016) — authoritative survey of bent (maximally nonlinear) functions.</li>
+<li><a href="https://arxiv.org/abs/2301.08012">M. Đurasević, D. Jakobović, L. Mariot &amp; S. Picek,
+"A Survey of Metaheuristic Algorithms for the Design of Cryptographic Boolean Functions"</a> (2023) —
+<span class="res-tag">free</span>. The modern search-based / heuristic design of Boolean functions.</li>
+</ul>
+
+<h3>Classification &amp; affine equivalence ($n \le 6$)</h3>
+<ul>
+<li><a href="https://www.ams.org/journals/mcom/1991-57-195/S0025-5718-1991-1079017-5/">J. A.
+Maiorana, "A Classification of the Cosets of the Reed–Muller Code R(1,6)"</a>, <em>Math.
+Comp.</em> 57 (1991) — <span class="res-tag">free</span>. First enumeration of the 150,357 affine
+equivalence classes for $n = 6$.</li>
+<li><a href="https://eprint.iacr.org/2004/248">A. Braeken, Y. Borissov, S. Nikova &amp;
+B. Preneel, "Classification of Boolean Functions of 6 Variables or Less…"</a> (ICALP 2005) —
+<span class="res-tag">free</span>. CI / resiliency / propagation classification.</li>
+<li><a href="https://arxiv.org/abs/2007.12308">X.-D. Hou, "On the Number of Affine Equivalence
+Classes of Boolean Functions"</a> (2020) — <span class="res-tag">free</span>. Counting AGL(n,2)
+orbits.</li>
+<li><a href="https://arxiv.org/abs/1705.04507">P. Leopardi, "Classifying Bent Functions by Their
+Cayley Graphs"</a> (2018) — <span class="res-tag">free</span>. Cayley-graph / extended-affine
+classification of bent functions up to dimension 8 (with SageMath).</li>
+<li><a href="https://arxiv.org/abs/2208.02469">V. Gillot &amp; P. Langevin, "Classification of Some
+Cosets of Reed–Muller Codes"</a> (2022) — <span class="res-tag">free</span>. Classifies the
+length-128 (n = 7) Reed–Muller cosets under the affine group.</li>
+<li><a href="https://eprint.iacr.org/2005/025">Q.-S. Meng, M. Yang, H.-G. Zhang &amp; Y. Liu, "The
+Analysis of Affinely Equivalent Boolean Functions"</a> (2005) — <span class="res-tag">free</span>.
+A general algorithm to test affine equivalence and recover the transform.</li>
+</ul>
+
+<h3>Algebraic immunity &amp; algebraic attacks</h3>
+<ul>
+<li><a href="https://iacr.org/archive/eurocrypt2003/26560345/26560345.pdf">N. Courtois &amp;
+W. Meier, "Algebraic Attacks on Stream Ciphers with Linear Feedback"</a> (EUROCRYPT 2003) —
+<span class="res-tag">free</span>. Introduced algebraic attacks via low-degree multiples.</li>
+<li>W. Meier, E. Pasalic &amp; C. Carlet, "Algebraic Attacks and Decomposition of Boolean
+Functions" (EUROCRYPT 2004, LNCS 3027) — defines <em>algebraic immunity</em> and proves
+AI(f) ≤ ⌈n/2⌉. <span class="res-note">Springer / search by title.</span></li>
+<li>D. K. Dalai, K. C. Gupta &amp; S. Maitra — "Results on Algebraic Immunity…" (INDOCRYPT 2004)
+and "Cryptographically Significant Boolean Functions: Construction &amp; Analysis in Terms of
+Algebraic Immunity" (FSE 2005). <span class="res-note">Springer / search by title.</span></li>
+<li><a href="https://arxiv.org/abs/2510.01720">P. Sarkar, "Constructions of Efficiently Implementable
+Boolean Functions with Provable Nonlinearity/Resiliency/Algebraic Immunity Trade-Offs"</a> (2025) —
+<span class="res-tag">free</span>. A general framework for functions with provable NL / resiliency /
+AI trade-offs.</li>
+</ul>
+
+<h3>Multiplicative complexity &amp; datasets</h3>
+<ul>
+<li><a href="https://eprint.iacr.org/2018/002">Ç. Çalık, M. Sönmez Türan &amp; R. Peralta, "The
+Multiplicative Complexity of 6-variable Boolean Functions"</a> (2018) — <span class="res-tag">free</span>
+(also <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7802510/">open access via PMC</a>).
+Multiplicative complexity for all 150,357 $n = 6$ classes.</li>
+<li><a href="https://doi.org/10.1007/s12095-015-0150-9">J. Boyar, M. G. Find &amp; R. Peralta,
+"On Various Nonlinearity Measures for Boolean Functions"</a>, <em>Cryptogr. Commun.</em> 8 (2016)
+— six affine-invariant measures (free author manuscript via PubMed Central).</li>
+<li><a href="https://github.com/usnistgov/Circuits">NIST — minimal-multiplication circuits for
+6-variable predicates</a> — <span class="res-tag">free</span>. One representative + a minimal-AND
+circuit per $n = 6$ class.</li>
+</ul>
+
+<h3>Higher-order nonlinearity &amp; covering radius</h3>
+<ul>
+<li><a href="https://arxiv.org/abs/1809.04864">"The Covering Radius of the Reed–Muller Code
+RM(2,7) is 40"</a> — <span class="res-tag">free</span>. Settles the maximum second-order
+nonlinearity for $n = 7$.</li>
+<li><a href="https://arxiv.org/abs/1510.08535">"On the Covering Radius of the Second-Order
+Reed–Muller Code of Length 128"</a> — <span class="res-tag">free</span>. Related
+second-order-nonlinearity / covering-radius work.</li>
+</ul>
+
+<h3>Foundational classics</h3>
+<p class="muted">Origin papers — widely cited; not all are freely online (check a library or the
+publisher).</p>
+<ul>
+<li>O. S. Rothaus, "On Bent Functions," <em>J. Combinatorial Theory A</em> 20 (1976) — defines
+bent functions.</li>
+<li>T. Siegenthaler, "Correlation-Immunity of Nonlinear Combining Functions for Cryptographic
+Applications," <em>IEEE Trans. Inf. Theory</em> (1984) — correlation immunity and the degree
+trade-off.</li>
+<li>W. Meier &amp; O. Staffelbach, "Nonlinearity Criteria for Cryptographic Functions"
+(EUROCRYPT 1989).</li>
+</ul>
+</main>
+<footer class="site-footer"><div class="foot-inner">
+<span>© Dr Joanne Fuller · <a href="https://orcid.org/0000-0002-5221-3505" rel="me noopener">ORCID</a> · <a href="https://scholar.google.com/citations?user=aCp_g7IAAAAJ&amp;hl=en" rel="me noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">LinkedIn</a></span>
+<span>Content and data licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a>: please <a href="equivalence-classes.html#cite">cite</a> when reusing</span>
+</div></footer>
+</body>
+</html>

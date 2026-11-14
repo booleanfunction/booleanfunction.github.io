@@ -1,0 +1,9 @@
+# Private working notes (Claude project instructions) — never publish
+CLAUDE.md
+claude-data/
+
+# Editor / OS cruft
+.DS_Store
+*.swp
+.vscode/
+__pycache__/
