@@ -7,7 +7,21 @@ authors:
     given-names: Joanne
     orcid: "https://orcid.org/0000-0002-5221-3505"
 url: "https://booleanfunction.github.io"
+repository-code: "https://github.com/booleanfunction/booleanfunction.github.io"
+version: "1.0"
+date-released: "2026-11-14"
 license: CC-BY-4.0
+abstract: >-
+  Representative truth tables for all 150,357 affine equivalence classes of Boolean
+  functions on six variables, grouped by nonlinearity, algebraic order and maximum
+  absolute autocorrelation, together with the 74,542 classes that contain balanced
+  functions. The data was computed for the PhD thesis "Analysis of Affine Equivalent
+  Boolean Functions for Cryptography" (J. Fuller, Queensland University of Technology,
+  2003) and first published on the Boolean Planet website in 2003; it is re-released here
+  unchanged after re-validation. This archive also contains the booleanfunction.github.io
+  website: class tables for n = 3, 4, 5, class sizes (self-mapping constant), the Theorem
+  of Connectivity, constructions and search, linear redundancy in the AES S-box, and
+  interactive tools (class graph explorer and function analyser).
 keywords:
   - Boolean functions
   - cryptography
