@@ -748,6 +748,7 @@ volatility and electricity price spikes.</li>
 </ul>
 <p>My interest in Boolean functions never stopped. I've kept coming back to them over the years,
 and I have unpublished work that I'm keen to finalise and share. This site is a first step.</p>
+<p>To get in touch, please <a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">message me on LinkedIn</a>.</p>
 <p><strong>My research interests:</strong> cryptographic Boolean functions and their classification;
 affine equivalence and invariants; cryptanalysis.</p>
 <p>By <strong>Dr Joanne Fuller</strong> ·
@@ -1150,7 +1151,7 @@ to lightweight cryptography and NIST standardisation work.</div>
 
 <div class="callout-note"><p>If you use the $n = 6$ classification data, please cite the PhD
 thesis above (see <a href="equivalence-classes.html#cite">how to cite</a>). If you have used
-the data in your own work, I'd be glad to hear about it.</p></div>"""
+the data in your own work, I'd be glad to hear about it: please <a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">message me on LinkedIn</a>.</p></div>"""
     page("publications.html", "Publications — Boolean Functions for Cryptography",
          "Publications on cryptographic Boolean function analysis and linear redundancy in the AES S-box.",
          pub)
@@ -1231,8 +1232,8 @@ papers and datasets.</li>
 functions in cryptography. Links point to canonical sources — author / arXiv preprints, IACR
 ePrint, PubMed Central, the AMS, publisher DOIs, and official code repositories. Entries marked
 <span class="res-tag">free</span> have free full text.</p>
-<p class="muted">This list grows over time. If a link breaks or you have a suggestion, please get
-in touch.</p>
+<p class="muted">This list grows over time. If a link breaks or you have a suggestion, please
+<a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">message me on LinkedIn</a>.</p>
 
 <h2>Textbooks &amp; surveys</h2>
 <ul>
@@ -1344,8 +1345,8 @@ reported each result. Organised by <em>objective</em> — because the criteria t
 once the optimised property and the fixed constraints are specified.</p>
 <div class="callout-note"><p><strong>Work in progress — corrections welcome.</strong> This is a
 best-effort community record and may be incomplete or out of date. If you know a stronger result, a
-missing entry, or a correction to a first attribution, please <a href="index.html">get in
-touch</a>. Entries without a link cite the publication of record; <strong>★</strong> marks an open
+missing entry, or a correction to a first attribution, please
+<a href="https://www.linkedin.com/in/joanne-fuller-phd-04955b1a/" rel="me noopener">message me on LinkedIn</a>. Entries without a link cite the publication of record; <strong>★</strong> marks an open
 target.</p></div>
 
 <h2>Maximum nonlinearity</h2>
