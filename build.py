@@ -757,7 +757,7 @@ affine equivalence and invariants; cryptanalysis.</p>
 <a href="https://eprints.qut.edu.au/15828/1/Joanne_Fuller_Thesis.pdf">PhD thesis (PDF)</a></p>"""
     page("index.html", "Boolean Functions for Cryptography",
          "Research, data and reference material on Boolean functions for cryptography — the Boolean Planet.",
-         home)
+         home, extra='<meta name="google-site-verification" content="o6ujCVw5XLwPzOo71x56H4U-ZcqMI4dI0_lqqAXOMBw">\n')
 
     # Equivalence classes
     eq = f"""<h1>Affine Equivalence Classes</h1>
