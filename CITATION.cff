@@ -8,6 +8,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-5221-3505"
 url: "https://booleanfunction.github.io"
 repository-code: "https://github.com/booleanfunction/booleanfunction.github.io"
+doi: "10.5281/zenodo.24217283"
 version: "1.0"
 date-released: "2026-11-14"
 license: CC-BY-4.0

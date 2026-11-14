@@ -1,5 +1,7 @@
 # booleanfunction.github.io
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24217283.svg)](https://doi.org/10.5281/zenodo.24217283)
+
 The public website for **Boolean Functions for Cryptography** research — a modern home for
 the original *Boolean Planet* site, served at [booleanfunction.github.io](https://booleanfunction.github.io/).
 

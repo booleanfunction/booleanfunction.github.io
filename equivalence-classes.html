@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css?v=c9669768">
 <script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "Affine equivalence classes of 6-variable Boolean functions", "description": "Representative truth tables for all 150,357 affine equivalence classes of Boolean functions on six variables, grouped by nonlinearity, algebraic order and maximum absolute autocorrelation, with the 74,542 classes that contain balanced functions. Computed for the PhD thesis 'Analysis of Affine Equivalent Boolean Functions for Cryptography' (Queensland University of Technology, 2003) and published on the Boolean Planet website in 2003.", "url": "https://booleanfunction.github.io/equivalence-classes.html", "creator": {"@type": "Person", "name": "Joanne Fuller", "@id": "https://orcid.org/0000-0002-5221-3505", "sameAs": ["https://orcid.org/0000-0002-5221-3505"]}, "datePublished": "2003", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "keywords": ["Boolean functions", "cryptography", "affine equivalence", "nonlinearity", "equivalence classes", "bent functions"], "citation": "J. Fuller. Analysis of Affine Equivalent Boolean Functions for Cryptography. PhD thesis, Queensland University of Technology, 2003. https://eprints.qut.edu.au/15828/", "distribution": [{"@type": "DataDownload", "encodingFormat": "application/zip", "contentUrl": "https://booleanfunction.github.io/data/n6-classes.zip", "name": "All 150,357 classes"}, {"@type": "DataDownload", "encodingFormat": "application/zip", "contentUrl": "https://booleanfunction.github.io/data/n6-balanced-classes.zip", "name": "74,542 classes containing balanced functions"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "Affine equivalence classes of 6-variable Boolean functions", "description": "Representative truth tables for all 150,357 affine equivalence classes of Boolean functions on six variables, grouped by nonlinearity, algebraic order and maximum absolute autocorrelation, with the 74,542 classes that contain balanced functions. Computed for the PhD thesis 'Analysis of Affine Equivalent Boolean Functions for Cryptography' (Queensland University of Technology, 2003) and published on the Boolean Planet website in 2003.", "url": "https://booleanfunction.github.io/equivalence-classes.html", "identifier": "https://doi.org/10.5281/zenodo.24217283", "sameAs": "https://doi.org/10.5281/zenodo.24217283", "creator": {"@type": "Person", "name": "Joanne Fuller", "@id": "https://orcid.org/0000-0002-5221-3505", "sameAs": ["https://orcid.org/0000-0002-5221-3505"]}, "datePublished": "2003", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "keywords": ["Boolean functions", "cryptography", "affine equivalence", "nonlinearity", "equivalence classes", "bent functions"], "citation": "J. Fuller. Analysis of Affine Equivalent Boolean Functions for Cryptography. PhD thesis, Queensland University of Technology, 2003. https://eprints.qut.edu.au/15828/", "distribution": [{"@type": "DataDownload", "encodingFormat": "application/zip", "contentUrl": "https://booleanfunction.github.io/data/n6-classes.zip", "name": "All 150,357 classes"}, {"@type": "DataDownload", "encodingFormat": "application/zip", "contentUrl": "https://booleanfunction.github.io/data/n6-balanced-classes.zip", "name": "74,542 classes containing balanced functions"}]}</script>
 </head>
 <body>
 <header class="site-head"><a class="masthead-title" href="index.html">Boolean Functions for Cryptography</a><nav class="masthead-nav" aria-label="Main"><a class="navlink" href="index.html">Home</a><a class="navlink" href="basics.html">Basics</a><details class="navgroup"><summary class="navlink active">Classes</summary><div class="navmenu"><a href="equivalence-classes.html" aria-current="page">Equivalence classes &amp; data</a><a href="class-sizes.html">Class sizes</a><a href="connectivity.html">Connectivity</a></div></details><details class="navgroup"><summary class="navlink">Research</summary><div class="navmenu"><a href="constructions.html">Constructions &amp; search</a><a href="sboxes.html">S-boxes &amp; AES</a><a href="records.html">Records &amp; open problems</a><a href="efficient-implementation.html">Efficient implementation</a></div></details><details class="navgroup"><summary class="navlink">Tools</summary><div class="navmenu"><a href="explore.html">Class Graph Explorer</a><a href="analyse.html">Function Analyser</a></div></details><a class="navlink" href="publications.html">Publications</a><a class="navlink" href="learning.html">Learning</a></nav></header>
@@ -130,11 +130,14 @@ against their file names.</li>
 </ul>
 
 <h3 id="cite">How to cite</h3>
-<p>If you use these data files or tables, please cite:</p>
+<p>If you use these data files or tables, please cite the thesis, and the archived dataset if you
+used the files:</p>
 <div class="callout-note"><p>J. Fuller. <em>Analysis of Affine Equivalent Boolean Functions for
 Cryptography.</em> PhD thesis, Queensland University of Technology, Brisbane, Australia, 2003.
-<a href="https://eprints.qut.edu.au/15828/1/Joanne_Fuller_Thesis.pdf">https://eprints.qut.edu.au/15828/</a>.
-Data available at https://booleanfunction.github.io/equivalence-classes.html</p></div>
+<a href="https://eprints.qut.edu.au/15828/1/Joanne_Fuller_Thesis.pdf">https://eprints.qut.edu.au/15828/</a>.</p>
+<p>J. Fuller. <em>Boolean Functions for Cryptography: affine equivalence class data.</em> Zenodo,
+2026. <a href="https://doi.org/10.5281/zenodo.24217283">doi:10.5281/zenodo.24217283</a>
+(data first published 2003).</p></div>
 <pre><code>@phdthesis{fuller2003affine,
   author = {Joanne Fuller},
   title  = {Analysis of Affine Equivalent Boolean Functions for Cryptography},
@@ -143,6 +146,16 @@ Data available at https://booleanfunction.github.io/equivalence-classes.html</p>
   year   = {2003},
   url    = {https://eprints.qut.edu.au/15828/},
   note   = {Data: \url{https://booleanfunction.github.io/equivalence-classes.html}}
+}
+
+@misc{fuller_n6_data,
+  author    = {Joanne Fuller},
+  title     = {Boolean Functions for Cryptography: affine equivalence class data},
+  publisher = {Zenodo},
+  year      = {2026},
+  doi       = {10.5281/zenodo.24217283},
+  url       = {https://doi.org/10.5281/zenodo.24217283},
+  note      = {Data first published 2003}
 }</code></pre>
 </main>
 <footer class="site-footer"><div class="foot-inner">

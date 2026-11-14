@@ -108,6 +108,8 @@ _DATASET = {
         "Functions for Cryptography' (Queensland University of Technology, 2003) and "
         "published on the Boolean Planet website in 2003."),
     "url": SITE + "equivalence-classes.html",
+    "identifier": "https://doi.org/10.5281/zenodo.24217283",
+    "sameAs": "https://doi.org/10.5281/zenodo.24217283",
     "creator": {"@type": "Person", "name": "Joanne Fuller", "@id": ORCID,
                 "sameAs": [ORCID]},
     "datePublished": "2003",
@@ -872,11 +874,14 @@ against their file names.</li>
 </ul>
 
 <h3 id="cite">How to cite</h3>
-<p>If you use these data files or tables, please cite:</p>
+<p>If you use these data files or tables, please cite the thesis, and the archived dataset if you
+used the files:</p>
 <div class="callout-note"><p>J. Fuller. <em>Analysis of Affine Equivalent Boolean Functions for
 Cryptography.</em> PhD thesis, Queensland University of Technology, Brisbane, Australia, 2003.
-<a href="https://eprints.qut.edu.au/15828/1/Joanne_Fuller_Thesis.pdf">https://eprints.qut.edu.au/15828/</a>.
-Data available at https://booleanfunction.github.io/equivalence-classes.html</p></div>
+<a href="https://eprints.qut.edu.au/15828/1/Joanne_Fuller_Thesis.pdf">https://eprints.qut.edu.au/15828/</a>.</p>
+<p>J. Fuller. <em>Boolean Functions for Cryptography: affine equivalence class data.</em> Zenodo,
+2026. <a href="https://doi.org/10.5281/zenodo.24217283">doi:10.5281/zenodo.24217283</a>
+(data first published 2003).</p></div>
 <pre><code>@phdthesis{{fuller2003affine,
   author = {{Joanne Fuller}},
   title  = {{Analysis of Affine Equivalent Boolean Functions for Cryptography}},
@@ -885,6 +890,16 @@ Data available at https://booleanfunction.github.io/equivalence-classes.html</p>
   year   = {{2003}},
   url    = {{https://eprints.qut.edu.au/15828/}},
   note   = {{Data: \\url{{https://booleanfunction.github.io/equivalence-classes.html}}}}
+}}
+
+@misc{{fuller_n6_data,
+  author    = {{Joanne Fuller}},
+  title     = {{Boolean Functions for Cryptography: affine equivalence class data}},
+  publisher = {{Zenodo}},
+  year      = {{2026}},
+  doi       = {{10.5281/zenodo.24217283}},
+  url       = {{https://doi.org/10.5281/zenodo.24217283}},
+  note      = {{Data first published 2003}}
 }}</code></pre>"""
     page("equivalence-classes.html", "Affine Equivalence Classes — Boolean Functions for Cryptography",
          "Affine equivalence class tables for Boolean functions of n = 3, 4, 5 and the full n = 6 classification data (150,357 classes).",
